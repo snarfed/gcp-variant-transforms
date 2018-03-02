@@ -18,6 +18,7 @@ from __future__ import absolute_import
 
 import copy
 import json
+import logging
 import math
 import re
 import sys
@@ -310,9 +311,10 @@ def _get_base_row_from_variant(variant, split_alternate_allele_info_fields):
       for info_key, info in variant.info.iteritems():
         if info.field_count == _FIELD_COUNT_ALTERNATE_ALLELE:
           if alt_index >= len(info.data):
-            raise ValueError(
+            logging.warning(
                 'Invalid number of "A" fields for key %s in variant %s ' % (
                     info_key, variant))
+            continue
           alt_record[_get_bigquery_sanitized_field_name(info_key)] = (
               _get_bigquery_sanitized_field(info.data[alt_index]))
     row[ColumnKeyConstants.ALTERNATE_BASES].append(alt_record)
