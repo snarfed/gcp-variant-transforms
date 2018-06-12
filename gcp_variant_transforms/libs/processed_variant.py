@@ -256,11 +256,12 @@ class ProcessedVariantFactory(object):
   def _add_per_alt_info(self, proc_var, field_name, variant_info_data):
     # type: (ProcessedVariant, str, vcfio.VariantInfo) -> None
     if len(variant_info_data) != len(proc_var._alternate_datas):
-      raise ValueError(
+      logging.warning(
           'Per alternate INFO field {} does not have same cardinality as '
           ' number of alternates: {} vs {}'.format(
               field_name, len(variant_info_data),
               len(proc_var._alternate_datas)))
+      return
     for alt_index, info in enumerate(variant_info_data):
       proc_var._alternate_datas[alt_index]._info[field_name] = info
 
